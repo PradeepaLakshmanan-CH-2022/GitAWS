@@ -1,15 +1,17 @@
 version: 0.0
-os: windows
+os: linux
 files:
-  - source: /
-    destination: C:\MyCicdApplication
-
+  - source: /index.html
+    destination: /var/www/html/
 hooks:
   BeforeInstall:
-    - location: Scripts\before_install.ps1
-  AfterInstall:
-    - location: Scripts\after_install.ps1
-  ApplicationStart:
-    - location: Scripts\application_start.ps1
-  ValidateService:
-    - location: Scripts\validate_service.ps1
+    - location: scripts/install_dependencies
+      timeout: 300
+      runas: root
+    - location: scripts/start_server
+      timeout: 300
+      runas: root
+  ApplicationStop:
+    - location: scripts/stop_server
+      timeout: 300
+      runas: root
